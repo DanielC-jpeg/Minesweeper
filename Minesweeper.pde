@@ -17,7 +17,7 @@ void setup ()
     for(int row = 0; row < NUM_ROWS; row++)
         for(int col = 0; col < NUM_COLS; col++)
             buttons[row][col] = new MSButton(row, col);
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 20; i++)
         setBombs();
 }
 public void setBombs()
