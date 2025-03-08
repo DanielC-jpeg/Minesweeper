@@ -1,7 +1,7 @@
 import de.bezier.guido.*;
 //Declare and initialize NUM_ROWS and NUM_COLS = 20
- int NUM_ROWS = 20;
-int NUM_COLS = 20;
+public final static int NUM_ROWS = 10;
+public final static int NUM_COLS = 10;
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs = new ArrayList <MSButton>(); //ArrayList of just the minesweeper buttons that are mined
 void setup ()
@@ -20,17 +20,13 @@ void setup ()
     for(int i = 0; i < 5; i++)
         setBombs();
 }
-public void setMines()
+public void setBombs()
 {
-      while (mines.size() < (NUM_ROWS * NUM_COLS) / 5) { 
-        int randomRow = (int) (Math.random()*NUM_ROWS);
-        int randomCol = (int) (Math.random()*NUM_COLS);
-        
-    if(!mines.contains(buttons[randomRow][randomCol])) {
-     mines.add(buttons[randomRow][randomCol]); 
-    }
-      }
-    
+    //your code
+    int randomRow = (int)(Math.random()*NUM_ROWS);
+    int randomCol = (int)(Math.random()*NUM_COLS);
+    if(bombs.contains(buttons[randomRow][randomCol]) == false)
+        bombs.add(buttons[randomRow][randomCol]);
 }
 
 public void draw ()
@@ -167,47 +163,79 @@ public class MSButton
         }
     }
 
-    public void draw () 
+    public void draw()
     {    
-      
-      isWon();
-        if (flagged)
+        if (marked)
             fill(0);
-         else if( clicked && mines.contains(this) ) 
-           fill(255,0,0);
+        else if(clicked && bombs.contains(this)) 
+            fill(255,0,0);
         else if(clicked)
             fill( 200 );
         else 
             fill( 100 );
-            
-            if(won == true) {
-                textSize(50);
-          
-   text("YOU WIN!", 200, 200);
-            }
-            
-            if(lost == true) {
-
-             textSize(50);
-           
-                text("YOU LOST!", 200, 200);
-            }
-        
         rect(x, y, width, height);
-        fill(0);
-        textSize(10);
-        text(myLabel,x+width/2,y+height/2);
+        fill(colr);
+        text(label,x+width/2,y+height/2);
     }
     public void setLabel(String newLabel)
     {
-        myLabel = newLabel;
+        label = newLabel;
     }
-    public void setLabel(int newLabel)
+    public void setColr(int r, int g, int b)
     {
-        myLabel = ""+ newLabel;
+        colr = color(r, g, b);
     }
-    public boolean isFlagged()
+    public boolean isValid(int r, int c)
     {
-        return flagged;
+        //your code here
+        if(r >= 0 && r < NUM_ROWS && c >= 0 && c < NUM_COLS)
+            return true;
+        else
+            return false;
+    }
+    public int countBombs(int row, int col)
+    {
+        int numBombs = 0;
+        if(isValid(row-1, col-1))
+        {
+            if(bombs.contains(buttons[row-1][col-1]))
+                numBombs++;
+        }
+        if(isValid(row-1, col))
+        {
+            if(bombs.contains(buttons[row-1][col]))
+                numBombs++;
+        }
+        if(isValid(row-1, col+1))
+        {
+            if(bombs.contains(buttons[row-1][col+1]))
+                numBombs++;
+        }
+        if(isValid(row, col-1))
+        {
+            if(bombs.contains(buttons[row][col-1]))
+                numBombs++;
+        }
+        if(isValid(row, col+1))
+        {
+            if(bombs.contains(buttons[row][col+1]))
+                numBombs++;
+        }
+        if(isValid(row+1, col-1))
+        {
+            if(bombs.contains(buttons[row+1][col-1]))
+                numBombs++;
+        }
+        if(isValid(row+1, col))
+        {
+            if(bombs.contains(buttons[row+1][col]))
+                numBombs++;
+        }
+        if(isValid(row+1, col+1))
+        {
+            if(bombs.contains(buttons[row+1][col+1]))
+                numBombs++;
+        }
+        return numBombs;
     }
 }
